@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">NewsApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="saved_fragment">Saved Fragment</string>
+    <string name="news_fragment">News Fragment</string>
+    <string name="info_fragment">Info Fragment</string>
+    <string name="news_headlines">News Headlines</string>
+    <string name="saved_news">Saved News</string>
 </resources>
