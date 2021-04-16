@@ -15,9 +15,9 @@ import com.sayantanbanerjee.newsapp.presentation.viewmodel.NewsViewModel
 
 class NewsFragment : Fragment() {
 
-    private lateinit var viewModel : NewsViewModel
+    private lateinit var viewModel: NewsViewModel
     private lateinit var fragmentNewsBinding: FragmentNewsBinding
-    private lateinit var newsAdapter : NewsAdapter
+    private lateinit var newsAdapter: NewsAdapter
 
     private var country = "in"
     private var page = 1
@@ -33,21 +33,21 @@ class NewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as MainActivity).viewModel
+        newsAdapter = (activity as MainActivity).newsAdapter
         fragmentNewsBinding = FragmentNewsBinding.bind(view)
         initRecyclerView()
         viewNewsList()
     }
 
-    private fun initRecyclerView() {
-        newsAdapter = NewsAdapter()
+    private fun initRecyclerView() {-
         fragmentNewsBinding.rvNews.adapter = newsAdapter
         fragmentNewsBinding.rvNews.layoutManager = LinearLayoutManager(activity)
     }
 
     private fun viewNewsList() {
         viewModel.getNewsHeadlines(country, page)
-        viewModel.newsHeadlines.observe(viewLifecycleOwner, {response ->
-            when(response){
+        viewModel.newsHeadlines.observe(viewLifecycleOwner, { response ->
+            when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let {
@@ -58,7 +58,8 @@ class NewsFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let {
-                        Toast.makeText(activity, "An Error Occurred : $it", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, "An Error Occurred : $it", Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
 
@@ -69,11 +70,11 @@ class NewsFragment : Fragment() {
         })
     }
 
-    private fun showProgressBar(){
+    private fun showProgressBar() {
         fragmentNewsBinding.progressBar.visibility = View.VISIBLE
     }
 
-    private fun hideProgressBar(){
+    private fun hideProgressBar() {
         fragmentNewsBinding.progressBar.visibility = View.INVISIBLE
     }
 
