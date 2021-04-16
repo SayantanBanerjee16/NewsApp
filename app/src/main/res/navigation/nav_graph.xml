@@ -27,5 +27,9 @@
         android:id="@+id/infoFragment"
         android:name="com.sayantanbanerjee.newsapp.InfoFragment"
         android:label="fragment_info"
-        tools:layout="@layout/fragment_info" />
+        tools:layout="@layout/fragment_info" >
+        <argument
+            android:name="selected_item"
+            app:argType="com.sayantanbanerjee.newsapp.data.model.Article" />
+    </fragment>
 </navigation>
