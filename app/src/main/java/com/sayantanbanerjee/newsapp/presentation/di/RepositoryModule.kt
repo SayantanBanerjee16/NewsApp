@@ -1,5 +1,6 @@
 package com.sayantanbanerjee.newsapp.presentation.di
 
+import com.sayantanbanerjee.newsapp.data.repository.DataSource.NewsLocalDataSource
 import com.sayantanbanerjee.newsapp.data.repository.DataSource.NewsRemoteDataSource
 import com.sayantanbanerjee.newsapp.data.repository.NewsRepositoryImpl
 import com.sayantanbanerjee.newsapp.domain.repository.NewsRepository
@@ -16,7 +17,10 @@ class RepositoryModule {
     // provided the NewsRepositoryImpl(data->repository) which is called from the Use Cases
     @Singleton
     @Provides
-    fun providesNewsRepository(newsRemoteDataSource: NewsRemoteDataSource): NewsRepository {
-        return NewsRepositoryImpl(newsRemoteDataSource)
+    fun providesNewsRepository(
+        newsRemoteDataSource: NewsRemoteDataSource,
+        newsLocalDataSource: NewsLocalDataSource
+    ): NewsRepository {
+        return NewsRepositoryImpl(newsRemoteDataSource, newsLocalDataSource)
     }
 }

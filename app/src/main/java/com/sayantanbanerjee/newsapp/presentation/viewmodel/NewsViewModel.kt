@@ -9,20 +9,25 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sayantanbanerjee.newsapp.data.model.APIResponse
+import com.sayantanbanerjee.newsapp.data.model.Article
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.sayantanbanerjee.newsapp.data.util.Resource
 import com.sayantanbanerjee.newsapp.domain.UseCase.GetNewsHeadlinesUseCase
+import com.sayantanbanerjee.newsapp.domain.UseCase.GetSavedNewsUseCase
 import com.sayantanbanerjee.newsapp.domain.UseCase.GetSearchedNewsUseCase
+import com.sayantanbanerjee.newsapp.domain.UseCase.SaveNewsUseCase
 import java.lang.Exception
 
 class NewsViewModel(
     private val app: Application,
     private val getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase,
-    private val getSearchedNewsUseCase: GetSearchedNewsUseCase
+    private val getSearchedNewsUseCase: GetSearchedNewsUseCase,
+    private val saveNewsUseCase: SaveNewsUseCase
 ) : AndroidViewModel(app) {
     val newsHeadlines: MutableLiveData<Resource<APIResponse>> = MutableLiveData()
 
+    // fetch data from API
     fun getNewsHeadlines(country: String, page: Int) = viewModelScope.launch(Dispatchers.IO) {
         newsHeadlines.postValue(Resource.Loading())
         try {
@@ -80,5 +85,10 @@ class NewsViewModel(
         } catch (exp: Exception) {
             searchedNews.postValue(Resource.Error(exp.message.toString()))
         }
+    }
+
+    // save data to local database
+    fun saveArticle(article: Article) = viewModelScope.launch {
+        saveNewsUseCase.execute(article)
     }
 }

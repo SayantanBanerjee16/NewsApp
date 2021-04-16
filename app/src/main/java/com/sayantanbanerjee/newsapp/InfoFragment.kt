@@ -7,11 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.sayantanbanerjee.newsapp.databinding.FragmentInfoBinding
+import com.sayantanbanerjee.newsapp.presentation.MainActivity
+import com.sayantanbanerjee.newsapp.presentation.viewmodel.NewsViewModel
 
 class InfoFragment : Fragment() {
 
     private lateinit var fragmentInfoBinding: FragmentInfoBinding
+    private lateinit var viewModel: NewsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,14 +27,24 @@ class InfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = (activity as MainActivity).viewModel
+
         fragmentInfoBinding = FragmentInfoBinding.bind(view)
         val args: InfoFragmentArgs by navArgs()
-        val articleURL = args.selectedItem.url
+        val article = args.selectedItem
+        val articleURL = article.url
         fragmentInfoBinding.wvInfo.apply {
             webViewClient = WebViewClient()
-            if (articleURL != "") {
+            if (articleURL != null) {
                 loadUrl(articleURL)
             }
         }
+
+        fragmentInfoBinding.floatingActionButton.setOnClickListener {
+            viewModel.saveArticle(article)
+            Snackbar.make(view, "Saved Successfully", Snackbar.LENGTH_LONG).show()
+        }
+
     }
 }

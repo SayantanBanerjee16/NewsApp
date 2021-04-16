@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var factory: NewsViewModelFactory
+
     lateinit var viewModel: NewsViewModel
 
     @Inject

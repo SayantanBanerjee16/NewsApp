@@ -3,6 +3,7 @@ package com.sayantanbanerjee.newsapp.presentation.di
 import android.app.Application
 import com.sayantanbanerjee.newsapp.domain.UseCase.GetNewsHeadlinesUseCase
 import com.sayantanbanerjee.newsapp.domain.UseCase.GetSearchedNewsUseCase
+import com.sayantanbanerjee.newsapp.domain.UseCase.SaveNewsUseCase
 import com.sayantanbanerjee.newsapp.presentation.NewsViewModelFactory
 import dagger.Module
 import dagger.Provides
@@ -20,8 +21,14 @@ class FactoryModule {
     fun providesNewsViewModelFactory(
         application: Application,
         getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase,
-        getSearchedNewsUseCase: GetSearchedNewsUseCase
+        getSearchedNewsUseCase: GetSearchedNewsUseCase,
+        saveNewsUseCase: SaveNewsUseCase
     ): NewsViewModelFactory {
-        return NewsViewModelFactory(application, getNewsHeadlinesUseCase, getSearchedNewsUseCase)
+        return NewsViewModelFactory(
+            application,
+            getNewsHeadlinesUseCase,
+            getSearchedNewsUseCase,
+            saveNewsUseCase
+        )
     }
 }
