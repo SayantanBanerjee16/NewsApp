@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import androidx.navigation.fragment.navArgs
-import com.sayantanbanerjee.newsapp.data.model.Article
 import com.sayantanbanerjee.newsapp.databinding.FragmentInfoBinding
 
 class InfoFragment : Fragment() {
