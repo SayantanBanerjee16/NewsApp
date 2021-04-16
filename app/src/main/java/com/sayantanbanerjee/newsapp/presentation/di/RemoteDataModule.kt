@@ -6,11 +6,11 @@ import com.sayantanbanerjee.newsapp.data.repository.DataSourceImpl.NewsRemoteDat
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 class RemoteDataModule {
 
     // provided the NewsRemoteDataSourceImpl(data->repository->DataSourceImpl) which is called from NewsRepositoryImpl(data->repository)

@@ -99,7 +99,7 @@ dependencies {
 
     // Hilt dependency
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     // Navigation
     def nav_version = "2.3.2"
