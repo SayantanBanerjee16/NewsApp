@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sayantanbanerjee.newsapp.data.util.Resource
 import com.sayantanbanerjee.newsapp.databinding.FragmentNewsBinding
 import com.sayantanbanerjee.newsapp.presentation.MainActivity
@@ -21,6 +23,10 @@ class NewsFragment : Fragment() {
 
     private var country = "in"
     private var page = 1
+
+    private var isScrolling = false
+    private var isLoading = false
+    private var isLastPage = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,9 +45,10 @@ class NewsFragment : Fragment() {
         viewNewsList()
     }
 
-    private fun initRecyclerView() {-
+    private fun initRecyclerView() {
         fragmentNewsBinding.rvNews.adapter = newsAdapter
         fragmentNewsBinding.rvNews.layoutManager = LinearLayoutManager(activity)
+        fragmentNewsBinding.rvNews.addOnScrollListener(this@NewsFragment.onScrollListener)
     }
 
     private fun viewNewsList() {
@@ -52,6 +59,13 @@ class NewsFragment : Fragment() {
                     hideProgressBar()
                     response.data?.let {
                         newsAdapter.differ.submitList(it.articles.toList())
+
+                        val pages = if (it.totalResults % 20 == 0) {
+                            it.totalResults / 20
+                        } else {
+                            it.totalResults / 20 + 1
+                        }
+                        isLastPage = page == pages
                     }
                 }
 
@@ -71,11 +85,41 @@ class NewsFragment : Fragment() {
     }
 
     private fun showProgressBar() {
+        isLoading = true
         fragmentNewsBinding.progressBar.visibility = View.VISIBLE
     }
 
     private fun hideProgressBar() {
+        isLoading = false
         fragmentNewsBinding.progressBar.visibility = View.INVISIBLE
+    }
+
+    private val onScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                isScrolling = true
+            }
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val layoutManager = fragmentNewsBinding.rvNews.layoutManager as LinearLayoutManager
+            val sizeOfTheCurrentList = layoutManager.itemCount
+            val visibleItems = layoutManager.childCount
+            val topPosition = layoutManager.findFirstVisibleItemPosition()
+
+            val hasReachedToEnd = topPosition + visibleItems >= sizeOfTheCurrentList
+            val shouldPaginate = !isLoading && !isLastPage && hasReachedToEnd && isScrolling
+
+            if(shouldPaginate){
+                page++
+                viewModel.getNewsHeadlines(country, page)
+                isScrolling = false
+            }
+
+        }
+
     }
 
 }
