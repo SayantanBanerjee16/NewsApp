@@ -1,10 +1,7 @@
 package com.sayantanbanerjee.newsapp.presentation.di
 
 import com.sayantanbanerjee.newsapp.data.model.Article
-import com.sayantanbanerjee.newsapp.domain.UseCase.GetNewsHeadlinesUseCase
-import com.sayantanbanerjee.newsapp.domain.UseCase.GetSavedNewsUseCase
-import com.sayantanbanerjee.newsapp.domain.UseCase.GetSearchedNewsUseCase
-import com.sayantanbanerjee.newsapp.domain.UseCase.SaveNewsUseCase
+import com.sayantanbanerjee.newsapp.domain.UseCase.*
 import com.sayantanbanerjee.newsapp.domain.repository.NewsRepository
 import dagger.Module
 import dagger.Provides
@@ -40,6 +37,12 @@ class UseCaseModule {
     @Provides
     fun providesGetSavedNewsUseCase(newsRepository: NewsRepository): GetSavedNewsUseCase {
         return GetSavedNewsUseCase(newsRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun providesDeleteNewsUseCase(newsRepository: NewsRepository): DeleteSavedNewsUseCase {
+        return DeleteSavedNewsUseCase(newsRepository)
     }
 
 }

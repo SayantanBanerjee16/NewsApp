@@ -14,10 +14,8 @@ import com.sayantanbanerjee.newsapp.data.model.Article
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.sayantanbanerjee.newsapp.data.util.Resource
-import com.sayantanbanerjee.newsapp.domain.UseCase.GetNewsHeadlinesUseCase
-import com.sayantanbanerjee.newsapp.domain.UseCase.GetSavedNewsUseCase
-import com.sayantanbanerjee.newsapp.domain.UseCase.GetSearchedNewsUseCase
-import com.sayantanbanerjee.newsapp.domain.UseCase.SaveNewsUseCase
+import com.sayantanbanerjee.newsapp.domain.UseCase.*
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.collect
 import java.lang.Exception
 
@@ -26,7 +24,8 @@ class NewsViewModel(
     private val getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase,
     private val getSearchedNewsUseCase: GetSearchedNewsUseCase,
     private val saveNewsUseCase: SaveNewsUseCase,
-    private val getSavedNewsUseCase: GetSavedNewsUseCase
+    private val getSavedNewsUseCase: GetSavedNewsUseCase,
+    private val deleteSavedNewsUseCase: DeleteSavedNewsUseCase
 ) : AndroidViewModel(app) {
     val newsHeadlines: MutableLiveData<Resource<APIResponse>> = MutableLiveData()
 
@@ -70,7 +69,7 @@ class NewsViewModel(
     }
 
     // search
-    val searchedNews : MutableLiveData<Resource<APIResponse>> = MutableLiveData()
+    val searchedNews: MutableLiveData<Resource<APIResponse>> = MutableLiveData()
 
     fun getSearchNews(
         country: String,
@@ -97,9 +96,15 @@ class NewsViewModel(
 
     // get saved news
 
-    fun getSavedNews() = liveData{
+    fun getSavedNews() = liveData {
         getSavedNewsUseCase.execute().collect {
             emit(it)
         }
+    }
+
+    // delete article
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        deleteSavedNewsUseCase.execute(article)
     }
 }
