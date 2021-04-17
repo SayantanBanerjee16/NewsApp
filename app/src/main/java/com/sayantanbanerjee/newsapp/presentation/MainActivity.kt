@@ -4,14 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.sayantanbanerjee.newsapp.R
 import com.sayantanbanerjee.newsapp.databinding.ActivityMainBinding
 import com.sayantanbanerjee.newsapp.presentation.adapter.NewsAdapter
 import com.sayantanbanerjee.newsapp.presentation.viewmodel.NewsViewModel
+import com.sayantanbanerjee.newsapp.presentation.viewmodelfactory.NewsViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.view.*
 import javax.inject.Inject
 
 @AndroidEntryPoint

@@ -2,6 +2,7 @@ package com.sayantanbanerjee.newsapp.presentation.di
 
 import com.sayantanbanerjee.newsapp.data.model.Article
 import com.sayantanbanerjee.newsapp.domain.UseCase.GetNewsHeadlinesUseCase
+import com.sayantanbanerjee.newsapp.domain.UseCase.GetSavedNewsUseCase
 import com.sayantanbanerjee.newsapp.domain.UseCase.GetSearchedNewsUseCase
 import com.sayantanbanerjee.newsapp.domain.UseCase.SaveNewsUseCase
 import com.sayantanbanerjee.newsapp.domain.repository.NewsRepository
@@ -33,6 +34,12 @@ class UseCaseModule {
     @Provides
     fun providesSaveNewsUseCase(newsRepository: NewsRepository): SaveNewsUseCase {
         return SaveNewsUseCase(newsRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun providesGetSavedNewsUseCase(newsRepository: NewsRepository): GetSavedNewsUseCase {
+        return GetSavedNewsUseCase(newsRepository)
     }
 
 }
